@@ -22,25 +22,34 @@
           <th>Permissions</th>
         </tr>
       </thead>
-      <tr>
-        <td>1</td>
-        <td>Sample IPFS Link</td>
-        <td>2023-05-20 15:30:00</td>
-        <td>
-          <button class="manageAccessBtn">Manage Access</button>
-          <button class="giveAccessBtn">Give Access</button>
-        </td>
-      </tr>
       <tbody>
-        <!-- Table rows will be dynamically generated using JavaScript -->
+        
+        <!-- Dynamically generated table rows will be inserted here -->
       </tbody>
     </table>
-   
   </div>
-  <script charset="utf-8"
-        src="https://cdn.ethers.io/scripts/ethers-v4.min.js"
-        type="text/javascript">
-</script>
+  <div id="popupBox" class="popup">
+    <div class="popup-content">
+      <h2 class="popup-heading">People Who Have Access</h2>
+      <table id="accessTable">
+        <thead>
+          <tr>
+            <th>User Name</th>
+            <th>Wallet Address</th>
+            <th>Revoke</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Table rows will be dynamically generated using JavaScript -->
+        </tbody>
+      </table>
+      <button id="closePopupBtn" class="close-btn">Close</button>
+    </div>
+  </div>
+  
+  
+  
+  <script charset="utf-8" src="https://cdn.ethers.io/scripts/ethers-v4.min.js"></script>
   <script src="db.js"></script>
 </body>
 </html>
