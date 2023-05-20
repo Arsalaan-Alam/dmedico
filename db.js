@@ -5,10 +5,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const addFileBtn = document.getElementById('addFileBtn');
     const fileInput = document.getElementById('fileInput');
     const fileDisplay = document.getElementById('fileDisplay');
-    const submitButton = document.createElement('button');
-    submitButton.id = 'submitButton';
-    submitButton.textContent = 'Submit';
-    submitButton.style.display = 'none';
+    const submitButton = document.getElementById('submitButton');
   
     addFileBtn.addEventListener('click', () => {
       fileInput.click();
@@ -41,9 +38,30 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   
     function showSubmitButton() {
-        const submitButton = document.getElementById('submitButton');
-  submitButton.style.display = 'block';
+      submitButton.style.display = 'block';
+    }
+  
+    submitButton.addEventListener('click', () => {
+      const selectedFile = fileInput.files[0];
+      if (selectedFile) {
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        // Send the formData to the server or endpoint using fetch or other methods
+        // Example:
+        fetch('endpoint', {
+          method: 'POST',
+          body: formData,
+        })
+          .then(response => response.json())
+          .then(data => {
+            console.log('File submitted successfully:', data);
+            // Handle the response from the server or endpoint
+          })
+          .catch(error => {
+            console.error('Error submitting file:', error);
+            // Handle the error as needed
+          });
       }
-      
+    });
   });
   
