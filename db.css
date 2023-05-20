@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@500&family=Montserrat:wght@700&family=Varela+Round&display=swap');
+.wlc{
+    font-family: "Anuphan";
+    text-align: center;
+    font-size: 30px;
+}
+.heading{
+    font-family: "Montserrat";
+    font-size: 80px;
+    margin-top: 10%;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .welcome-text {
+    text-align: center;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+  }
+  
+  .center-button {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+#fileNameDisplay {
+    display: inline-block;
+    margin-left: 10px;
+    margin-top: 10px;
+  }
+
+  #submitButton {
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+  }
+.addf{
+    font-family: "Varela Round";
+    border-radius: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 0px solid black;
+}
