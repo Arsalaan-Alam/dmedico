@@ -46,6 +46,13 @@ window.addEventListener('DOMContentLoaded', () => {
       if (selectedFile) {
         const formData = new FormData();
         formData.append('uploadedFile', selectedFile);
+
+        //provider = new ethers.providers.JsonRpcProvider()
+        const provider = new ethers.providers.JsonRpcProvider('https://api.hyperspace.node.glif.io/rpc/v1')
+        signer = provider.getSigner(0);
+        console.log(signer)
+
+
         // Send the formData to the server or endpoint using fetch or other methods
         // Example:
         fetch('http://localhost:5000/send', {
