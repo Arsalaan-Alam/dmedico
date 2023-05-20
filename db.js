@@ -45,10 +45,10 @@ window.addEventListener('DOMContentLoaded', () => {
       const selectedFile = fileInput.files[0];
       if (selectedFile) {
         const formData = new FormData();
-        formData.append('file', selectedFile);
+        formData.append('uploadedFile', selectedFile);
         // Send the formData to the server or endpoint using fetch or other methods
         // Example:
-        fetch('endpoint', {
+        fetch('http://localhost:5000/send', {
           method: 'POST',
           body: formData,
         })
