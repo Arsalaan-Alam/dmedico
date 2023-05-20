@@ -41,7 +41,7 @@ window.addEventListener('DOMContentLoaded', () => {
       submitButton.style.display = 'block';
     }
   
-    submitButton.addEventListener('click', () => {
+    submitButton.addEventListener('click', async() => {
       const selectedFile = fileInput.files[0];
       if (selectedFile) {
         const formData = new FormData();
@@ -49,8 +49,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
         //provider = new ethers.providers.JsonRpcProvider()
         const provider = new ethers.providers.JsonRpcProvider('https://api.hyperspace.node.glif.io/rpc/v1')
-        signer = provider.getSigner(0);
-        console.log(signer)
+        signer = await provider.getSigner(0)
+        formData.append('signer', signer)
+        /*
+          .then((res) => {
+            console.log(res.json())
+          })
+          .catch((e) => {
+            console.log(e)
+          })
+        */
 
 
         // Send the formData to the server or endpoint using fetch or other methods
