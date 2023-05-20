@@ -57,6 +57,14 @@ body {
     display: block;
     margin: 0 auto;
     margin-top: 20px;
+    font-family: "Varela Round";
+    border-radius: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    cursor: pointer;
+    border: 0px solid black;
   }
 .addf{
     font-family: "Varela Round";
