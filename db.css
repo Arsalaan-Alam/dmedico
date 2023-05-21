@@ -191,22 +191,27 @@ body {
 
 .popup-form {
   display: none; /* Initially hide the form */
+  margin-top: 20px;
 }
 
 .popup-form input {
   display: block;
   margin-bottom: 10px;
-  width: 100%;
-  padding: 8px;
+  width: 500px;
+  padding: 20px;
+  height: 20px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  font-family: 'Varela Round';
+  border-radius: 10px;
+  font-size: 18px;
+  
 }
 
 .submit-btn {
   margin-top: 20px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+
+
+
   font-family: "Varela Round";
   border-radius: 20px;
   padding-left: 20px;
@@ -216,8 +221,29 @@ body {
   cursor: pointer;
   border: 0px solid black;
   font-size: 18px;
-  margin-right: 10px;
-  margin-left: -20%;
-}
 
-/* Add any additional styles for the form and buttons as needed */
+}
+.close-btn1{
+  margin-top: 20px;
+  display: block;
+
+  font-family: "Varela Round";
+  border-radius: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  cursor: pointer;
+  border: 0px solid black;
+  font-size: 18px;
+}
+.revoke{
+  font-family: "Varela Round";
+    border-radius: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    cursor: pointer;
+    border: 0px solid black;
+}

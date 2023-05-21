@@ -97,6 +97,16 @@ window.addEventListener('DOMContentLoaded', () => {
     removeBtn.className = 'removeBtn';
     removeBtn.textContent = 'Remove File';
     permissionsCell.appendChild(removeBtn);
+    removeBtn.addEventListener('click', function() {
+      // Get the row element that contains the remove button
+      const row = this.closest('tr');
+      
+      // Remove the row from the table
+      if (row) {
+        row.remove();
+      }
+    });
+
 
     manageAccessBtn.addEventListener('click', () => {
       openPopupBox(fileData.fileName);
@@ -135,6 +145,8 @@ closePopupBtnNew.addEventListener('click', () => {
     closePopupBtn.style.display = 'block';
     accessTable.style.display = 'table';
     accessTable.style.width = '100%';
+    const poi = document.getElementById('poi')
+    poi.textContent = 'People Who Have Access';
   
 });
   
@@ -159,6 +171,7 @@ closePopupBtnNew.addEventListener('click', () => {
     const revokeCell = newRow.insertCell();
     const revokeBtn = document.createElement('button');
     revokeBtn.textContent = 'Revoke';
+    revokeBtn.className = 'revoke';
     revokeCell.appendChild(revokeBtn);
   });
 
@@ -182,6 +195,9 @@ document.addEventListener('DOMContentLoaded', () => {
     accessTable.style.display = 'none'; // Hide the previous table
     addAccessForm.style.display = 'block'; // Show the access form
     closePopupBtn.style.display = 'none';
+    const poi = document.getElementById('poi')
+    poi.textContent = 'Give Access';
+
   });
 
   submitAccessBtn.addEventListener('click', () => {
@@ -204,6 +220,8 @@ document.addEventListener('DOMContentLoaded', () => {
     accessTable.style.width = '100%';
   
     closePopupBtn.style.display = 'block';
+    const poi = document.getElementById('poi')
+    poi.textContent = 'People Who Have Access';
 
     
   });
