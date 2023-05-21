@@ -49,6 +49,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function displayFileName(fileName) {
     fileDisplay.textContent = fileName;
+    fileDisplay.style.fontFamily = 'Varela Round';
   }
 
   function showSubmitButton() {
