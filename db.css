@@ -168,11 +168,17 @@ body {
 }
 
 
-.popup-buttons {
+.popup-buttons{
   display: flex;
-  justify-content: flex-end; /* Align buttons to the right */
-  margin-top: 10px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
 }
+
+.popup-buttons button {
+  margin: 0 5px;
+}
+
 #accessTable {
   min-width: 100%;
   margin-top: 20px;
@@ -247,3 +253,14 @@ body {
     cursor: pointer;
     border: 0px solid black;
 }
+.popup-buttons2{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.popup-buttons2 button {
+  margin: 0 5px;
+}
+
