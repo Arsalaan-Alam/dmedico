@@ -93,18 +93,16 @@ window.addEventListener('DOMContentLoaded', () => {
     manageAccessBtn.textContent = 'Manage Access';
     permissionsCell.appendChild(manageAccessBtn);
 
-    const giveAccessBtn = document.createElement('button');
-    giveAccessBtn.className = 'giveAccessBtn';
-    giveAccessBtn.textContent = 'Give Access';
-    permissionsCell.appendChild(giveAccessBtn);
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'removeBtn';
+    removeBtn.textContent = 'Remove File';
+    permissionsCell.appendChild(removeBtn);
 
     manageAccessBtn.addEventListener('click', () => {
       openPopupBox(fileData.fileName);
     });
 
-    giveAccessBtn.addEventListener('click', () => {
-      openGiveAccessPopup();
-    });
+  
     newRow.appendChild(permissionsCell);
 
     dataTable.querySelector('tbody').appendChild(newRow);
@@ -128,6 +126,17 @@ function openPopupBox(fileName) {
   const popupBox = document.getElementById('popupBox');
   const accessTable = document.getElementById('accessTable');
   const closePopupBtn = document.getElementById('closePopupBtn');
+  const closePopupBtnNew = document.getElementById('closePopupBtnNew');
+
+closePopupBtnNew.addEventListener('click', () => {
+  popupBox.style.display = 'none';
+  addAccessForm.style.display = 'none';
+    addAccessBtn.style.display = 'block';
+    closePopupBtn.style.display = 'block';
+    accessTable.style.display = 'table';
+    accessTable.style.width = '100%';
+  
+});
   
   // Clear existing table rows
   while (accessTable.rows.length > 1) {
@@ -162,17 +171,42 @@ function openPopupBox(fileName) {
   });
 }
 
-function openGiveAccessPopup() {
-  const giveAccessPopupBox = document.getElementById('giveAccessPopupBox');
-  const closeGiveAccessPopupBtn = document.getElementById('closeGiveAccessPopupBtn');
 
-  // Show the "Give Access" popup box
-  giveAccessPopupBox.style.display = 'block';
+document.addEventListener('DOMContentLoaded', () => {
+  const addAccessBtn = document.getElementById('addAccessBtn');
+  const addAccessForm = document.getElementById('addAccessForm');
+  const submitAccessBtn = document.getElementById('submitAccessBtn');
 
-  // Close the "Give Access" popup box on "Close" button click
-  closeGiveAccessPopupBtn.addEventListener('click', () => {
-    giveAccessPopupBox.style.display = 'none';
+  addAccessBtn.addEventListener('click', () => {
+    addAccessBtn.style.display = 'none'; // Hide the "Add Access" button
+    accessTable.style.display = 'none'; // Hide the previous table
+    addAccessForm.style.display = 'block'; // Show the access form
+    closePopupBtn.style.display = 'none';
   });
-}
 
+  submitAccessBtn.addEventListener('click', () => {
+    // Handle the form submission, e.g., retrieve input values and perform actions
+    const userName = document.getElementById('userNameInput').value;
+    const walletAddress = document.getElementById('walletAddressInput').value;
+    const remarks = document.getElementById('remarksInput').value;
 
+    // Perform actions with the input values (e.g., store data, update table, etc.)
+
+    // Reset the form
+    document.getElementById('userNameInput').value = '';
+    document.getElementById('walletAddressInput').value = '';
+    document.getElementById('remarksInput').value = '';
+
+    // Hide the form and show the "Add Access" button again
+    addAccessForm.style.display = 'none';
+    addAccessBtn.style.display = 'block';
+    accessTable.style.display = 'table';
+    accessTable.style.width = '100%';
+  
+    closePopupBtn.style.display = 'block';
+
+    
+  });
+
+  // Rest of your code...
+});
