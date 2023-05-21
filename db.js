@@ -229,3 +229,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Rest of your code...
 });
+const viewFilesBtn = document.getElementById('viewFilesBtn');
+const dataTable = document.getElementById('dataTable');
+const sharedFilesTable = document.getElementById('sharedFilesTable');
+const addFileBtn = document.getElementById('addFileBtn');
+
+
+let isViewingSharedFiles = false;
+
+viewFilesBtn.addEventListener('click', () => {
+  if (isViewingSharedFiles) {
+    viewFilesBtn.textContent = 'View Shared Files';
+    dataTable.style.display = 'table';
+    sharedFilesTable.style.display = 'none';
+  } else {
+    viewFilesBtn.textContent = 'View Your Files';
+    dataTable.style.display = 'none';
+    sharedFilesTable.style.display = 'table';
+  }
+
+  isViewingSharedFiles = !isViewingSharedFiles;
+});
+addFileBtn.addEventListener('click', () => {
+  if (dataTable.style.display === 'none') {
+    // If the shared files table is currently visible, show the data table
+    dataTable.style.display = 'table';
+    sharedFilesTable.style.display = 'none';
+  }
+});

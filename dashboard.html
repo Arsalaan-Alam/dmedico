@@ -9,7 +9,8 @@
     <h1 id="welcomeHeading" class="wlc"></h1>
     <div class="center-button">
       <button id="addFileBtn" class="addf">Add Another File</button>
-      <button id="addFileBtn" class="addf">View Shared Files</button>
+      <button id="viewFilesBtn" class="addf">View Shared Files</button>
+     
       <input type="file" id="fileInput" style="display: none;">
       <p id="fileDisplay"></p>
     </div>
@@ -24,8 +25,21 @@
         </tr>
       </thead>
       <tbody>
-        
         <!-- Dynamically generated table rows will be inserted here -->
+      </tbody>
+    </table>
+    <table id="sharedFilesTable" style="display: none;">
+      <thead>
+        <tr>
+          <th>File From</th>
+          <th>File Name</th>
+          <th>Remarks</th>
+          <th>Time of Sharing</th>
+          <th>View</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Table rows for shared files will be dynamically generated using JavaScript -->
       </tbody>
     </table>
   </div>
@@ -59,12 +73,7 @@
       </div>
     </div>
   </div>
-  
-  
-  
-  
-  
-  
+
   <script charset="utf-8" src="https://cdn.ethers.io/scripts/ethers-v4.min.js"></script>
   <script src="db.js"></script>
 </body>
