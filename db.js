@@ -7,7 +7,6 @@ window.addEventListener('DOMContentLoaded', () => {
   const fileDisplay = document.getElementById('fileDisplay');
   const submitButton = document.getElementById('submitButton');
   const dataTable = document.getElementById('dataTable');
-  let serialNumber = 1; // Starting serial number
 
   addFileBtn.addEventListener('click', () => {
     fileInput.click();
@@ -72,10 +71,23 @@ window.addEventListener('DOMContentLoaded', () => {
     const newRow = document.createElement('tr');
 
     // Serial Number column
-    const serialNoCell = document.createElement('td');
-    serialNoCell.textContent = serialNumber;
-    newRow.appendChild(serialNoCell);
-    serialNumber++; // Increment the serial number for the next entry
+    const assignedSerialNumbers = new Set();
+    function generateUniqueSerialNumber() {
+      const serialNumber = Math.floor(Math.random() * 900000) + 100000;
+      if (assignedSerialNumbers.has(serialNumber)) {
+        return generateUniqueSerialNumber();
+      }
+      assignedSerialNumbers.add(serialNumber);
+      return serialNumber;
+}
+
+
+const serialNumber = generateUniqueSerialNumber();
+
+const serialNoCell = document.createElement('td');
+serialNoCell.textContent = serialNumber;
+newRow.appendChild(serialNoCell);
+
 
     // IPFS Link (File Name) column
     const ipfsLinkCell = document.createElement('td');
