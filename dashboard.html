@@ -8,7 +8,9 @@
   <div class="container">
     <h1 id="welcomeHeading" class="wlc"></h1>
     <div class="center-button">
-      <button id="addFileBtn" class="addf">Add another file</button>
+      <button id="addFileBtn" class="addf">Add Another File</button>
+      <button id="viewFilesBtn" class="addf">View Shared Files</button>
+     
       <input type="file" id="fileInput" style="display: none;">
       <p id="fileDisplay"></p>
     </div>
@@ -23,16 +25,59 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Table rows will be dynamically generated using JavaScript -->
+        <!-- Dynamically generated table rows will be inserted here -->
       </tbody>
     </table>
-   
+    <table id="sharedFilesTable" style="display: none;">
+      <thead>
+        <tr>
+          <th>File From</th>
+          <th>File Name</th>
+          <th>Remarks</th>
+          <th>Time of Sharing</th>
+          <th>View</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Table rows for shared files will be dynamically generated using JavaScript -->
+      </tbody>
+    </table>
+  </div>
+  <div id="popupBox" class="popup">
+    <div class="popup-content">
+      <h2 class="popup-heading" id="poi">People Who Have Access</h2>
+      <table id="accessTable">
+        <thead>
+          <tr>
+            <th>User Name</th>
+            <th>Wallet Address</th>
+            <th>Revoke</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Table rows will be dynamically generated using JavaScript -->
+        </tbody>
+      </table>
+      <div class="popup-form" id="addAccessForm">
+        <input type="text" id="userNameInput" placeholder="User Name">
+        <input type="text" id="walletAddressInput" placeholder="Wallet Address">
+        <input type="text" id="remarksInput" placeholder="Remarks">
+        <div class="popup-buttons2">
+        <button id="submitAccessBtn" class="submit-btn">Submit</button>
+        <button id="closePopupBtnNew" class="close-btn1">Close</button>
+      </div>
+      </div>
+      <div class="popup-buttons">
+        <button id="addAccessBtn" class="access-btn">Give Access</button>
+        <button id="closePopupBtn" class="close-btn">Close</button>
+      </div>
+    </div>
   </div>
   <script charset="utf-8"
         src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.3.0/ethers.umd.min.js"
         type="text/javascript">
 </script>
-
+   <script charset="utf-8" src="https://cdn.ethers.io/scripts/ethers-v4.min.js"></script>
   <script src="db.js"></script>
 </body>
 </html>

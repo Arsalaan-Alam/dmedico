@@ -73,9 +73,195 @@ body {
     padding-right: 20px;
     padding-top: 10px;
     padding-bottom: 10px;
+    margin-right: 10px;
     cursor: pointer;
     border: 0px solid black;
 }
 .addf:hover{
     cursor: pointer;
 }
+.manageAccessBtn, .removeBtn{
+  display: block;
+  margin: 0 auto;
+  margin-top: 5px;
+
+  font-family: "Varela Round";
+  border-radius: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  cursor: pointer;
+  border: 0px solid black;
+}
+.removeBtn{
+  margin-top: 10px;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+.popup-content {
+  max-width: 70%;
+  max-height: 75%;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  overflow-y: auto;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.popup-heading {
+  text-align: center;
+  font-family: "Anuphan";
+}
+
+.close-btn {
+  margin-top: 20px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: "Varela Round";
+  border-radius: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  cursor: pointer;
+  border: 0px solid black;
+  font-size: 18px;
+}
+.access-btn{
+  margin-top: 20px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: "Varela Round";
+  border-radius: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  cursor: pointer;
+  border: 0px solid black;
+  font-size: 18px;
+  margin-right: 10px;
+  margin-left: -20%;
+}
+
+
+.popup-buttons{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.popup-buttons button {
+  margin: 0 5px;
+}
+
+#accessTable {
+  min-width: 100%;
+  margin-top: 20px;
+}
+
+#accessTable th,
+#accessTable td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+#accessTable th {
+  font-weight: bold;
+}
+
+.popup-form {
+  display: none; /* Initially hide the form */
+  margin-top: 20px;
+}
+
+.popup-form input {
+  display: block;
+  margin-bottom: 10px;
+  width: 500px;
+  padding: 15px;
+  height: 20px;
+  border: 1px solid #ccc;
+  font-family: 'Varela Round';
+  border-radius: 10px;
+  font-size: 18px;
+  
+}
+
+.submit-btn {
+  margin-top: 20px;
+
+
+
+  font-family: "Varela Round";
+  border-radius: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  cursor: pointer;
+  border: 0px solid black;
+  font-size: 18px;
+
+}
+.close-btn1{
+  margin-top: 20px;
+  display: block;
+
+  font-family: "Varela Round";
+  border-radius: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  cursor: pointer;
+  border: 0px solid black;
+  font-size: 18px;
+}
+.revoke{
+  font-family: "Varela Round";
+    border-radius: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    cursor: pointer;
+    border: 0px solid black;
+}
+.popup-buttons2{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.popup-buttons2 button {
+  margin: 0 5px;
+}
+
