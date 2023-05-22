@@ -5,7 +5,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     const loginBtn = document.getElementById('loginBtn');
     loginBtn.addEventListener('click', loginWithMetaMask);
   } else {
-    console.log('Please install MetaMask');
+    window.alert('Please install MetaMask');
   }
 });
 

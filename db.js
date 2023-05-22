@@ -1,4 +1,11 @@
 window.addEventListener('DOMContentLoaded', () => {
+  const walletAddress = localStorage.getItem('walletAddress');
+
+  if (!walletAddress) {
+    window.location.href = 'index.html'; // Redirect to index.html or another appropriate page
+  }
+});
+window.addEventListener('DOMContentLoaded', () => {
   const address = localStorage.getItem('walletAddress');
   displayWelcomeMessage(address);
 
