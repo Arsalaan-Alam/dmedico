@@ -150,84 +150,177 @@ closePopupBtnNew.addEventListener('click', () => {
     poi.textContent = 'People Who Have Access';
   
 });
+function showSubmitButton() {
+  submitButton.style.display = 'block';
+}    
+
+
+const doDeal = async (obj, signer) => {
+  var contractABI = ''
+  fetch('./DealClient.json')
+    .then(response => response.json())
+    .then(async(data) => { 
+        contractABI = data.abi
+        console.log('Con abi',contractABI)
+        const contractAddress = "0xf8B7524c3dbfDe0d3e6E06d371A06a9B7430333a"
+    const dealClient = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        signer
+        
+    )        
+    console.log('response object :',obj)
+    const extraParamsV1 = [
+      obj.carlink,
+        obj.size,
+        false, // taskArgs.skipIpniAnnounce,
+        false, // taskArgs.removeUnsealedCopy
+    ]
+    const DealRequestStruct = [
+        obj.pieceCid, //cidHex
+        obj.pieceSize, //taskArgs.pieceSize,
+        false, //taskArgs.verifiedDeal,
+        obj.dataCid, //taskArgs.label,
+        520000, // startEpoch
+        1555200, // endEpoch
+        0, // taskArgs.storagePricePerEpoch,
+        0, // taskArgs.providerCollateral,
+        0, // taskArgs.clientCollateral,
+        1, //taskArgs.extraParamsVersion,
+        extraParamsV1,
+    ]
+    console.log(dealClient.interface);
+    const transaction = await dealClient.makeDealProposal(DealRequestStruct)
+    console.log("Proposing deal...")
+    const receipt = await transaction.wait()
+    console.log(receipt)
+    dealClient.on("DealProposalCreate", (id, size, verified, price) => {
+        console.log(id, size, verified, price);
+      })  
+    console.log("Deal proposed! CID: " + obj.dataCid)
+    })
+    .catch((e) => {
+      console.log(e)
+    })
+    
+
+}  
   
-  // Clear existing table rows
-  while (accessTable.rows.length > 1) {
-    accessTable.deleteRow(1);
+submitButton.addEventListener('click', async() => {
+  const selectedFile = fileInput.files[0];
+  if (selectedFile) {
+    const formData = new FormData();
+    formData.append('uploadedFile', selectedFile);
+    
+    const provider = new ethers.BrowserProvider(window.ethereum)
+    const signer = await provider.getSigner()
+    console.log(signer)
+            
+    console.log(signer.provider)
+    console.log(signer.address)
+    const formatSigner = {}
+    formatSigner.provider = signer.provider
+    formatSigner.address = signer.address
+    console.log(formatSigner.provider)        
+    formData.append('signer', JSON.stringify(signer))  
+
+    var dataObj = ''
+    // Send the formData to the server or endpoint using fetch or other methods
+    // Example:
+    fetch('http://localhost:5000/send', {
+      method: 'POST',
+      body: formData,
+    })
+      .then(res => res.json())
+      .then(async(data) => {
+        console.log('File submitted successfully:', data);
+        console.log('Data.Response :',data.response)
+        dataObj = data.response    
+        await doDeal(dataObj, signer)        
+        // Handle the response from the server or endpoint
+      })
+      .catch(error => {
+        console.error('Error submitting file:', error);
+        // Handle the error as needed
+      });
+      
   }
-  
-  // Fetch and display access data from localStorage or server
-  
-  // Example usage: Display sample access data
-  const sampleAccessData = [
-    { userName: 'John Doe', walletAddress: '0x123abc' },
-    { userName: 'Jane Smith', walletAddress: '0x456def' },
-    { userName: 'Alice Johnson', walletAddress: '0x789ghi' }
-  ];
+});
+while (accessTable.rows.length > 1) {
+  accessTable.deleteRow(1);
+}
 
-  sampleAccessData.forEach(access => {
-    const newRow = accessTable.insertRow();
-    newRow.insertCell().textContent = access.userName;
-    newRow.insertCell().textContent = access.walletAddress;
-    const revokeCell = newRow.insertCell();
-    const revokeBtn = document.createElement('button');
-    revokeBtn.textContent = 'Revoke';
-    revokeBtn.className = 'revoke';
-    revokeCell.appendChild(revokeBtn);
-  });
+// Fetch and display access data from localStorage or server
 
-  // Show the popup box
-  popupBox.style.display = 'block';
+// Example usage: Display sample access data
+const sampleAccessData = [
+  { userName: 'John Doe', walletAddress: '0x123abc' },
+  { userName: 'Jane Smith', walletAddress: '0x456def' },
+  { userName: 'Alice Johnson', walletAddress: '0x789ghi' }
+];
 
-  // Close the popup box on "Close" button click
-  closePopupBtn.addEventListener('click', () => {
-    popupBox.style.display = 'none';
-  });
+sampleAccessData.forEach(access => {
+  const newRow = accessTable.insertRow();
+  newRow.insertCell().textContent = access.userName;
+  newRow.insertCell().textContent = access.walletAddress;
+  const revokeCell = newRow.insertCell();
+  const revokeBtn = document.createElement('button');
+  revokeBtn.textContent = 'Revoke';
+  revokeBtn.className = 'revoke';
+  revokeCell.appendChild(revokeBtn);
+});
+
+// Show the popup box
+popupBox.style.display = 'block';
+
+// Close the popup box on "Close" button click
+closePopupBtn.addEventListener('click', () => {
+  popupBox.style.display = 'none';
+});
 }
 
 
 document.addEventListener('DOMContentLoaded', () => {
-  const addAccessBtn = document.getElementById('addAccessBtn');
-  const addAccessForm = document.getElementById('addAccessForm');
-  const submitAccessBtn = document.getElementById('submitAccessBtn');
+const addAccessBtn = document.getElementById('addAccessBtn');
+const addAccessForm = document.getElementById('addAccessForm');
+const submitAccessBtn = document.getElementById('submitAccessBtn');
 
-  addAccessBtn.addEventListener('click', () => {
-    addAccessBtn.style.display = 'none'; // Hide the "Add Access" button
-    accessTable.style.display = 'none'; // Hide the previous table
-    addAccessForm.style.display = 'block'; // Show the access form
-    closePopupBtn.style.display = 'none';
-    const poi = document.getElementById('poi')
-    poi.textContent = 'Give Access';
+addAccessBtn.addEventListener('click', () => {
+  addAccessBtn.style.display = 'none'; // Hide the "Add Access" button
+  accessTable.style.display = 'none'; // Hide the previous table
+  addAccessForm.style.display = 'block'; // Show the access form
+  closePopupBtn.style.display = 'none';
+  const poi = document.getElementById('poi')
+  poi.textContent = 'Give Access';
 
-  });
+});
 
-  submitAccessBtn.addEventListener('click', () => {
-    // Handle the form submission, e.g., retrieve input values and perform actions
-    const userName = document.getElementById('userNameInput').value;
-    const walletAddress = document.getElementById('walletAddressInput').value;
-    const remarks = document.getElementById('remarksInput').value;
+submitAccessBtn.addEventListener('click', () => {
+  // Handle the form submission, e.g., retrieve input values and perform actions
+  const userName = document.getElementById('userNameInput').value;
+  const walletAddress = document.getElementById('walletAddressInput').value;
+  const remarks = document.getElementById('remarksInput').value;
 
-    // Perform actions with the input values (e.g., store data, update table, etc.)
+  // Perform actions with the input values (e.g., store data, update table, etc.)
 
-    // Reset the form
-    document.getElementById('userNameInput').value = '';
-    document.getElementById('walletAddressInput').value = '';
-    document.getElementById('remarksInput').value = '';
+  // Reset the form
+  document.getElementById('userNameInput').value = '';
+  document.getElementById('walletAddressInput').value = '';
+  document.getElementById('remarksInput').value = '';
 
-    // Hide the form and show the "Add Access" button again
-    addAccessForm.style.display = 'none';
-    addAccessBtn.style.display = 'block';
-    accessTable.style.display = 'table';
-    accessTable.style.width = '100%';
-  
-    closePopupBtn.style.display = 'block';
-    const poi = document.getElementById('poi')
-    poi.textContent = 'People Who Have Access';
+  // Hide the form and show the "Add Access" button again
+  addAccessForm.style.display = 'none';
+  addAccessBtn.style.display = 'block';
+  accessTable.style.display = 'table';
+  accessTable.style.width = '100%';
 
-    
-  });
+  closePopupBtn.style.display = 'block';
+  const poi = document.getElementById('poi')
+  poi.textContent = 'People Who Have Access';
 
-  // Rest of your code...
+});
+
+// Rest of your code...
 });
 const viewFilesBtn = document.getElementById('viewFilesBtn');
 const dataTable = document.getElementById('dataTable');
@@ -238,22 +331,22 @@ const addFileBtn = document.getElementById('addFileBtn');
 let isViewingSharedFiles = false;
 
 viewFilesBtn.addEventListener('click', () => {
-  if (isViewingSharedFiles) {
-    viewFilesBtn.textContent = 'View Shared Files';
-    dataTable.style.display = 'table';
-    sharedFilesTable.style.display = 'none';
-  } else {
-    viewFilesBtn.textContent = 'View Your Files';
-    dataTable.style.display = 'none';
-    sharedFilesTable.style.display = 'table';
-  }
+if (isViewingSharedFiles) {
+  viewFilesBtn.textContent = 'View Shared Files';
+  dataTable.style.display = 'table';
+  sharedFilesTable.style.display = 'none';
+} else {
+  viewFilesBtn.textContent = 'View Your Files';
+  dataTable.style.display = 'none';
+  sharedFilesTable.style.display = 'table';
+}
 
-  isViewingSharedFiles = !isViewingSharedFiles;
+isViewingSharedFiles = !isViewingSharedFiles;
 });
 addFileBtn.addEventListener('click', () => {
-  if (dataTable.style.display === 'none') {
-    // If the shared files table is currently visible, show the data table
-    dataTable.style.display = 'table';
-    sharedFilesTable.style.display = 'none';
-  }
+if (dataTable.style.display === 'none') {
+  // If the shared files table is currently visible, show the data table
+  dataTable.style.display = 'table';
+  sharedFilesTable.style.display = 'none';
+}
 });
