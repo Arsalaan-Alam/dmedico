@@ -99,11 +99,32 @@ Our frontend is hosted independently on filecoin network through the help of sph
 
 
 ## Challenges we ran into
+1. It was our first time interacting with FVM and striking a deal to store files on FVM. We encountered several issues while doing this, the biggest one on which we were stuck for 2 days was to obtain the properties of the signer object. We were able to log the signer object properly in our console, but were not being able to send the signer object to our backend. We thought it was protected and hence appears as an empty object in the backend. At the end the issue was resolved by a protocol labs member who guided us to convert the CID to hex. We were out of our wits 😣
 
-## Accomplishments that we're proud of
+2. It was our first time working with Polybase, so we had to learn the syntax and set it up in last few hours of the hackathon. We faced a silly but lengthy issue with Polybase. We were properly creating a schema but getting such a big error that we couldn't even copy that error. After hours of debugging and crying, we found out that we're missing a parameter 🙂.
+
+3.  Our frontend was initially in react, but due to some incompatibility issues & lack of expertise we had to switch mid-way to native JS and vanilla HTML/CSS. Due to this we also had some redundancy and slow performance of processes in our application. We had to send the file to the API first and then the API triggers the smart contract and strikes a deal with FVM, if we had used React, we could have directly sent the file to FVM after a successful storage deal. 
+
+
+
+## Accomplishments that we're proud of:
+1. Successfully implementing a smart contract that strikes deals to store files on FVM
+2. Successfully storing our files on IPFS using Spheron & hosting our application on Spheron
+3. Using Polybase as our database for storing file related metadata.
+4. Implementing the access control feature, where only specific wallets have mutable access to specific files.
+5. We're also proud of our neat & clean UI and fully functional frontend.
+
 
 ## What we learned
-1. We learned how to strike storage deals with FVM.
-2. 
+1. We learned a great deal about the FVM and it was our first time coding a smart contract with solidity and interacting with FVM
+2. We learned a great deal about Spheron and it's services. We learned how to create spheron buckets and store & retrieve files. We also learned how to deploy your application on filecoin with the help of Spheron.
+3. We learnt Polybase. We successfully setup a big schema for decentralized storing of File related metadata. We found Polybase to be intuitive and self-navigable and are sure to use it in our future projects.
+4. We learnt how to efficiently work as a team, keep each other accountable, skill based work division and going out of our comfort zone to put each and every skill & sweat into our project.
 
 ## What's next for DMedico
+1. Implementing more access control features, and migrating to FVM to implement the access-control feature.
+2. Adding a end-to-end file encryption so that the file is encrypted and decrypted multiple times which enhances safety and confidentiality.
+3. Scaling the platform to add options to store heavier data on our platform.
+
+
+
