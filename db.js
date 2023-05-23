@@ -5,6 +5,27 @@ window.addEventListener('DOMContentLoaded', () => {
     window.location.href = 'index.html'; // Redirect to index.html or another appropriate page
   }
 });
+const data = {
+  function: 'getFilesByOwner',
+  owner: '0x4r4t87u'
+};
+
+fetch('https://dmedico-6k6gsdlfoa-em.a.run.app/update', {
+  method: 'POST',
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(data)
+})
+  .then((res) => res.json())
+  .then((data) => {
+    // Process the fetched data
+    console.log(data);
+  })
+  .catch((error) => {
+    console.error('Error fetching records:', error);
+  });
 window.addEventListener('DOMContentLoaded', () => {
   const address = localStorage.getItem('walletAddress');
   displayWelcomeMessage(address);
@@ -59,6 +80,7 @@ window.addEventListener('DOMContentLoaded', () => {
         .then(res => res.json())
         .then(async(data) => {
           console.log('File submitted successfully:', data);
+          const walletAddress = localStorage.getItem('walletAddress');
           console.log('Data.Response :',data.response)
           dataObj = data.response    
           doDeal(dataObj, signer)
@@ -68,8 +90,28 @@ window.addEventListener('DOMContentLoaded', () => {
                     .then(res => res.json())
                     .then(data => {
                       console.log(data)
+                      const iplink = data.url;
                       if (data.status === 'uploaded') {
-                        // Do something...
+                        const data = [ {"function" : "addFile"}, {
+                          "id": serialNumber,
+                          "owner": walletAddress,
+                          "filename": fileInput.files[0].name,
+                          "dateTime": getCurrentDateTime(),
+                          "ipfsurl": iplink
+                        }
+                      
+                      ]
+                      fetch ("https://dmedico-6k6gsdlfoa-em.a.run.app/update", {
+                          method: 'POST',
+                          headers: {
+                              'Accept': 'application/json',
+                              'Content-Type': 'application/json'
+                            },
+                          body: JSON.stringify(data4),
+                      })
+                       .then((res) => res.json())
+                       .then((data) => console.log(data))
+                       .catch((e) => {console.error(e)})
                       }
                       else {
                         console.error('File was not uploaded...')
