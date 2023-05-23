@@ -1,23 +1,23 @@
 window.addEventListener('DOMContentLoaded', async () => {
-  const provider = await detectEthereumProvider();
-  
-  if (provider) {
-    const loginBtn = document.getElementById('loginBtn');
-    loginBtn.addEventListener('click', loginWithMetaMask);
-  } else {
-    window.alert('Please install MetaMask');
-  }
+  const loginBtn = document.getElementById('loginBtn');
+  loginBtn.addEventListener('click', loginWithMetaMask);
 });
 
 async function loginWithMetaMask() {
-  try {
-    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-    const selectedAddress = accounts[0]; // The user's selected address
-    console.log('User logged in with address:', selectedAddress);
-    localStorage.setItem('walletAddress', selectedAddress);
-    window.location.href = 'dashboard.html';
-  } catch (error) {
-    console.log('Error:', error.message);
+  const provider = await detectEthereumProvider();
+
+  if (provider) {
+    try {
+      const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+      const selectedAddress = accounts[0]; // The user's selected address
+      console.log('User logged in with address:', selectedAddress);
+      localStorage.setItem('walletAddress', selectedAddress);
+      window.location.href = 'dashboard.html';
+    } catch (error) {
+      console.log('Error:', error.message);
+    }
+  } else {
+    alert('Please install MetaMask'); // Display alert popup
   }
 }
 
