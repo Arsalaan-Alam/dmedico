@@ -51,7 +51,7 @@ window.addEventListener('DOMContentLoaded', () => {
       var dataObj = ''
       // Send the formData to the server or endpoint using fetch or other methods
       // Example:
-      fetch('http://localhost:5000/send', {
+      fetch('https://dmedico-6k6gsdlfoa-em.a.run.app/send', {
         method: 'POST',
         body: formData,
       })
@@ -60,65 +60,87 @@ window.addEventListener('DOMContentLoaded', () => {
           console.log('File submitted successfully:', data);
           console.log('Data.Response :',data.response)
           dataObj = data.response    
-          await doDeal(dataObj, signer)        
-          // Handle the response from the server or endpoint
+          doDeal(dataObj, signer)
+            .then(res => {
+              if ( res === 'success'){                
+                  fetch(`https://dmedico-6k6gsdlfoa-em.a.run.app/upload?filename=${fileInput.files[0].name}`)                  
+                    .then(res => res.json())
+                    .then(data => {
+                      console.log(data)
+                      if (data.status === 'uploaded') {
+                        // Do something...
+                      }
+                      else {
+                        console.error('File was not uploaded...')
+                      }
+                    })
+                    .catch((e) =>{
+                      console.error('Upload error ' + e.name + ' ' + e.message)
+                    })
+                }
+            })            
+            .catch ((e) => console.log(e))
+            
         })
         .catch(error => {
           console.error('Error submitting file:', error);
           // Handle the error as needed
         });
       submitFile(formData);
-      clearFileInput();        
+      //clearFileInput();        
     }
   });
 
   const doDeal = async (obj, signer) => {
-    var contractABI = ''
-    fetch('./DealClient.json')
-      .then(response => response.json())
-      .then(async(data) => { 
-          contractABI = data.abi
-          console.log('Contract abi',contractABI)
-          const contractAddress = data.address
-          const dealClient = new ethers.Contract(
-            contractAddress,
-            contractABI,
-            signer        
-          )        
-      console.log('response object :',obj)
-      const extraParamsV1 = [
-        obj.carlink,
-          obj.size,
-          false, // taskArgs.skipIpniAnnounce,
-          false, // taskArgs.removeUnsealedCopy
-      ]
-      const DealRequestStruct = [
-          obj.pieceCid, //cidHex
-          obj.pieceSize, //taskArgs.pieceSize,
-          false, //taskArgs.verifiedDeal,
-          obj.dataCid, //taskArgs.label,
-          520000, // startEpoch
-          1555200, // endEpoch
-          0, // taskArgs.storagePricePerEpoch,
-          0, // taskArgs.providerCollateral,
-          0, // taskArgs.clientCollateral,
-          1, //taskArgs.extraParamsVersion,
-          extraParamsV1,
-      ]
-      console.log(dealClient.interface);
-      const transaction = await dealClient.makeDealProposal(DealRequestStruct)
-      console.log("Proposing deal...")
-      const receipt = await transaction.wait()
-      console.log(receipt)
-      dealClient.on("DealProposalCreate", (id, size, verified, price) => {
-          console.log(id, size, verified, price);
-        })  
-      console.log("Deal proposed! CID: " + obj.dataCid)
-      return 'success'
+    return new Promise((resolve, reject) => {
+      var contractABI = ''
+      fetch('./DealClient.json')
+        .then(response => response.json())
+        .then(async(data) => { 
+            contractABI = data.abi
+            console.log('Contract abi',contractABI)
+            const contractAddress = data.address
+            const dealClient = new ethers.Contract(
+              contractAddress,
+              contractABI,
+              signer        
+            )        
+        console.log('response object :',obj)
+        const extraParamsV1 = [
+          obj.carlink,
+            obj.size,
+            false, // taskArgs.skipIpniAnnounce,
+            false, // taskArgs.removeUnsealedCopy
+        ]
+        const DealRequestStruct = [
+            obj.pieceCid, //cidHex
+            obj.pieceSize, //taskArgs.pieceSize,
+            false, //taskArgs.verifiedDeal,
+            obj.dataCid, //taskArgs.label,
+            520000, // startEpoch
+            1555200, // endEpoch
+            0, // taskArgs.storagePricePerEpoch,
+            0, // taskArgs.providerCollateral,
+            0, // taskArgs.clientCollateral,
+            1, //taskArgs.extraParamsVersion,
+            extraParamsV1,
+        ]
+        console.log(dealClient.interface);
+        const transaction = await dealClient.makeDealProposal(DealRequestStruct)
+        console.log("Proposing deal...")
+        const receipt = await transaction.wait()
+        console.log(receipt)
+        dealClient.on("DealProposalCreate", (id, size, verified, price) => {
+            console.log(id, size, verified, price);
+          })  
+        console.log("Deal proposed! CID: " + obj.dataCid)
+        resolve('success')
       })
       .catch((e) => {
         console.log(e)
       })
+    })
+    
   }  
   
 
