@@ -5,27 +5,7 @@ window.addEventListener('DOMContentLoaded', () => {
     window.location.href = 'index.html'; // Redirect to index.html or another appropriate page
   }
 });
-const data = {
-  function: 'getFilesByOwner',
-  owner: '0x4r4t87u'
-};
 
-fetch('https://dmedico-6k6gsdlfoa-em.a.run.app/update', {
-  method: 'POST',
-  headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify(data)
-})
-  .then((res) => res.json())
-  .then((data) => {
-    // Process the fetched data
-    console.log(data);
-  })
-  .catch((error) => {
-    console.error('Error fetching records:', error);
-  });
 window.addEventListener('DOMContentLoaded', () => {
   const address = localStorage.getItem('walletAddress');
   displayWelcomeMessage(address);
@@ -85,18 +65,21 @@ window.addEventListener('DOMContentLoaded', () => {
           dataObj = data.response    
           doDeal(dataObj, signer)
             .then(res => {
-              if ( res === 'success'){                
-                  fetch(`https://dmedico-6k6gsdlfoa-em.a.run.app/upload?filename=${fileInput.files[0].name}`)                  
+              if ( res === 'success'){              
+                  console.log(selectedFile.name)
+                  fetch(`https://dmedico-6k6gsdlfoa-em.a.run.app/upload?filename=${selectedFile.name}`)                  
                     .then(res => res.json())
                     .then(data => {
                       console.log(data)
                       const iplink = data.url;
+                      const serialNo = generateUniqueSerialNumber()
+                      const dateT = getCurrentDateTime();
                       if (data.status === 'uploaded') {
                         const data = [ {"function" : "addFile"}, {
-                          "id": serialNumber,
+                          "id": serialNo.toString(),
                           "owner": walletAddress,
-                          "filename": fileInput.files[0].name,
-                          "dateTime": getCurrentDateTime(),
+                          "filename": selectedFile.name,
+                          "dateTime": dateT,
                           "ipfsurl": iplink
                         }
                       
@@ -107,7 +90,7 @@ window.addEventListener('DOMContentLoaded', () => {
                               'Accept': 'application/json',
                               'Content-Type': 'application/json'
                             },
-                          body: JSON.stringify(data4),
+                          body: JSON.stringify(data),
                       })
                        .then((res) => res.json())
                        .then((data) => console.log(data))
@@ -185,6 +168,15 @@ window.addEventListener('DOMContentLoaded', () => {
     })
     
   }  
+
+  function generateUniqueSerialNumber() {
+    return Math.floor(Math.random() * 900000) + 100000;
+  }
+
+  function getCurrentDateTime() {
+    const currentDate = new Date();
+    return currentDate.toLocaleString();
+  }
   
 
   function displayWelcomeMessage(address) {
@@ -334,6 +326,27 @@ while (accessTable.rows.length > 1) {
 // Fetch and display access data from localStorage or server
 
 // Example usage: Display sample access data
+
+const data1 = [ {"function" : "getFilesByOwner"}, {
+  "owner": localStorage.getItem('walletAddress')
+}]
+
+fetch('https://dmedico-6k6gsdlfoa-em.a.run.app/update', {
+  method: 'POST',
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(data1)
+  })
+  .then((res) => res.json())
+  .then((data) => {
+    // Process the fetched data
+    console.log(data);
+  })
+  .catch((error) => {
+    console.error('Error fetching records:', error);
+  });
 const sampleAccessData = [
   { userName: 'John Doe', walletAddress: '0x123abc' },
   { userName: 'Jane Smith', walletAddress: '0x456def' },
