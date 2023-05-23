@@ -32,7 +32,7 @@ window.addEventListener('DOMContentLoaded', () => {
       formData.append('uploadedFile', selectedFile);
 
       submitFile(formData);
-      clearFileInput();
+      
     }
   });*/
 
@@ -42,6 +42,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if (selectedFile) {
       const formData = new FormData();
       formData.append('uploadedFile', selectedFile);
+      
       
       const provider = new ethers.BrowserProvider(window.ethereum)
       const signer = await provider.getSigner()
@@ -87,7 +88,7 @@ window.addEventListener('DOMContentLoaded', () => {
           // Handle the error as needed
         });
       submitFile(formData);
-      //clearFileInput();        
+      clearFileInput();        
     }
   });
 

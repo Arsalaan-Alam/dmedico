@@ -1,24 +1,231 @@
 @import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@500&family=Montserrat:wght@700&family=Varela+Round&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
-    text-align: center;
-  }
-  
-  h1 {
-    font-family: "Montserrat";
-    font-size: 80px;
-    margin-top: 10%;
-  }
-  
-  button {
-    margin-top: 20px;
-    font-size: 20px;
-    font-family: "Montserrat";
-    border-radius: 40px;
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    cursor: pointer;
-    border: 0px solid black;
-  }
-  
+  font-family: "Anuphan", sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  background-color: #f4f4f4;
+}
+
+header {
+  background-color: #fff;
+  padding: 20px;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo img {
+  height: 60px;
+  margin-left: 20px;
+}
+
+.menu ul {
+  list-style: none;
+  display: flex;
+}
+
+.menu ul li {
+  margin-left: 40px;
+  margin-right: 20px;
+}
+.menu ul li a:hover{
+  color: blue;
+}
+
+.menu ul li a {
+  text-decoration: none;
+  color: #333;
+}
+
+.hero {
+  text-align: center;
+  padding: 50px 0;
+  height: 550px;
+}
+
+.hero h1 {
+  font-family: "Montserrat", sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+  margin-top: 50px;
+}
+
+.hero p {
+  font-family: "Varela Round", sans-serif;
+  font-size: 20px;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+button#loginBtn {
+  font-family: "Montserrat", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: #fff;
+  background-color: #333;
+  border: none;
+  border-radius: 40px;
+  padding: 15px 30px;
+  cursor: pointer;
+}
+
+section {
+  padding: 80px 0;
+  text-align: center;
+}
+
+section h2 {
+  font-family: "Montserrat", sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 40px;
+}
+
+.feature-container {
+  display: flex;
+  justify-content: center;
+  height: 400px;
+}
+
+.feature {
+  flex-basis: 30%;
+  padding: 20px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  margin: 0 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  min-height: 400px;
+  font-family: "Anuphan";
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.feature i {
+  font-size: 36px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.feature h3 {
+  font-family: "Montserrat", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.feature p {
+  color: #666;
+}
+
+.step-container {
+  display: flex;
+  justify-content: center;
+}
+
+.step {
+  flex-basis: 30%;
+  padding: 20px;
+  padding-left: 40px;
+  padding-bottom: 40px;
+  padding-right: 40px;
+  margin: 0 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.step h3 {
+  font-family:"Montserrat", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.step i {
+  font-size: 36px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.step p {
+  color: #666;
+  margin-top: 10px;
+  text-align: justify;
+}
+
+section#contact {
+  background-color: #f4f4f4;
+}
+
+section#contact h2 {
+  color: #333;
+}
+
+section#contact form {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+section#contact form input,
+section#contact form textarea {
+  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+section#contact form button[type="submit"] {
+  font-family: "Montserrat", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: #fff;
+  background-color: #333;
+  border: none;
+  border-radius: 40px;
+  padding: 15px 30px;
+  cursor: pointer;
+}
+
+footer {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+footer p {
+  font-family: "Varela Round", sans-serif;
+  font-size: 14px;
+}
+
+.fa-lock,
+.fa-users,
+.fa-cloud-upload-alt,
+.fa-user,
+.fa-file-upload,
+.fa-share-alt {
+  color: #333;
+}
+ol{
+  text-align: left;
+  margin-top: 10px;
+  color: #666;
+}

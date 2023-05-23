@@ -3,14 +3,87 @@
 <head>
   <title>DMedico</title>
   <link rel="stylesheet" type="text/css" href="index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
-    <h1>DMedico</h1>
-    
-    <button id="loginBtn">Login</button>
+  <header>
+    <nav>
+      <div class="logo">
+        <img src="logo.png" alt="">
+      </div>
+      <div class="menu">
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="https://github.com/Arsalaan-Alam/dmedico">Github</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="hero">
+      <h1>Secure and Decentralized File Transfer for Medics and Patients</h1>
+      <p>Share your medical files with ease and maintain confidentiality</p>
+      <button id="loginBtn">Login</button>
+    </div>
+  </header>
 
-    
-    <script src="https://cdn.jsdelivr.net/npm/@metamask/detect-provider@1.2.0/dist/detect-provider.min.js"></script>
-    <script src="index.js"></script>
-  </body>
-  </html>
+  <section id="features">
+    <h2>Features</h2>
+    <div class="feature-container">
+      <div class="feature">
+        <i class="fas fa-lock"></i>
+        <h3>Decentralized File Storage</h3>
+        <p>DMedico leverages the power of the Filecoin Virtual Machine (FVM) and Spheron, an IPFS-based distributed storage application. By utilizing this decentralized approach, your medical files are securely stored across a network of distributed nodes, ensuring data availability, fault-tolerance, and scalability. </p>
+      </div>
+      <div class="feature">
+        <i class="fas fa-users"></i>
+        <h3>Access Control</h3>
+        <p>DMedico empowers you with complete control over access to your medical files. Through an intuitive interface, you can easily manage access permissions for different healthcare professionals based on their wallet addresses. This ensures that only authorized individuals can view your medical records. </p>
+      </div>
+      <div class="feature">
+        <i class="fas fa-cloud-upload-alt"></i>
+        <h3>Secure File Transfer</h3>
+        <p> DMedico prioritizes the security of file transfers. We utilize AES256, an advanced asymmetric encryption technique, to encrypt your medical files before transmission. Combined with secure channels, your files are protected against unauthorized access during transit, ensuring utmost confidentiality. </p>
+      </div>
+    </div>
+  </section>
+
+ <section id="how-it-works">
+  <h2>How It Works</h2>
+  <div class="step-container">
+    <div class="step">
+      <h3>Step 1: Connect and Upload</h3>
+      <i class="fas fa-user"></i>
+      <p>Begin by connecting your MetaMask wallet to DMedico's secure platform. Once connected, you can upload your important medical files, including documents, test results, medical scans, medicine prescriptions and images, to the platform. </p>
+    </div>
+    <div class="step">
+      <h3>Step 2: Manage Access</h3>
+      <i class="fas fa-share-alt"></i>
+      <p>Effortlessly manage access to your files:</p>
+      <ol>
+        <li>Grant specific files to different healthcare professionals using their wallet addresses.</li>
+        <li>Revoke access as needed to maintain privacy and security.</li>
+      </ol>
+    </div>
+    <div class="step">
+      <h3>Step 3: View and Interact</h3>
+      <i class="fas fa-file-import"></i>
+      <p>Access and interact with your files:</p>
+      <ol>
+        <li>View and manage your uploaded files, including the ability to delete them if required.</li>
+        <li>View files shared with you, including details of the sender and any accompanying remarks.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+
+
+
+  <footer>
+    <p>&copy; 2023 DMedico. All rights reserved.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@metamask/detect-provider@1.2.0/dist/detect-provider.min.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>

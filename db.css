@@ -9,10 +9,47 @@
     font-size: 80px;
     margin-top: 10%;
 }
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "Anuphan";
+}
+
+.logo img {
+  height: 60px;
+  margin-left: 40px;
+  margin-top: 20px;
+  
+}
+
+.menu ul {
+  list-style: none;
+  display: flex;
+}
+
+.menu ul li {
+  margin-left: 40px;
+  margin-right: 20px;
+  margin-top: 30px;
+}
+.special{
+  margin-right: 40px;
+}
+.menu ul li a:hover{
+  color: blue;
+}
+
+.menu ul li a {
+  text-decoration: none;
+  color: #333;
+}
+
 body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
+    background-color: white;
   }
   
   .container {
