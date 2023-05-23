@@ -513,3 +513,85 @@ function logoutFromMetaMask() {
 // Add this event listener to your logout button
 const logoutBtn = document.getElementById('logoutBtn');
 logoutBtn.addEventListener('click', logoutFromMetaMask);
+
+//const sharedFilesTable = document.getElementById('sharedFilesTable');
+const tableBody = sharedFilesTable.querySelector('tbody'); // Get the table body element
+
+const walletAddress = localStorage.getItem('walletAddress');
+
+const data4 = [ {"function" : "getSharedFiles"}, {
+  "userwallet": walletAddress
+}]
+const sharedFilesData = []
+fetch ("https://dmedico-6k6gsdlfoa-em.a.run.app/update", {
+    method: 'POST',
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    body: JSON.stringify(data4),
+})
+ .then((res) => res.json())
+ .then((data) => {
+   console.log(data)
+   sharedFilesData = data
+  })
+ .catch((e) => {console.error(e)})
+// Sample data for shared files
+
+/*
+const sharedFilesData = [
+  {
+    fileFrom: 'User A',
+    fileName: 'File 1',
+    remarks: 'Shared with User B',
+    timeOfSharing: '2023-05-24 10:30 AM',
+    viewLink: 'https://example.com/file1',
+  },
+  {
+    fileFrom: 'User B',
+    fileName: 'File 2',
+    remarks: 'Shared with User A',
+    timeOfSharing: '2023-05-24 11:45 AM',
+    viewLink: 'https://example.com/file2',
+  },
+  // Add more shared files data as needed
+];*/
+
+// Function to dynamically update the shared files table
+function updateSharedFilesTable() {
+  // Clear existing table body content
+  tableBody.innerHTML = '';
+
+  // Generate new table rows based on the shared files data
+  sharedFilesData.forEach((file) => {
+    const newRow = tableBody.insertRow();
+
+    // File From
+    const fileFromCell = newRow.insertCell();
+    fileFromCell.textContent = file.fileFrom;
+
+    // File Name
+    const fileNameCell = newRow.insertCell();
+    fileNameCell.textContent = file.fileName;
+
+    // Remarks
+    const remarksCell = newRow.insertCell();
+    remarksCell.textContent = file.remarks;
+
+    // Time of Sharing
+    const timeOfSharingCell = newRow.insertCell();
+    timeOfSharingCell.textContent = file.timeOfSharing;
+
+    // View
+    const viewCell = newRow.insertCell();
+    const viewLink = document.createElement('a');
+    viewLink.textContent = 'View';
+    viewLink.href = file.viewLink;
+    viewLink.target = '_blank';
+    viewCell.appendChild(viewLink);
+  });
+}
+
+// Call the function to initially populate the table
+updateSharedFilesTable();
