@@ -389,3 +389,12 @@ if (dataTable.style.display === 'none') {
   sharedFilesTable.style.display = 'none';
 }
 });
+// Add this function in your db.js code
+function logoutFromMetaMask() {
+  localStorage.removeItem('walletAddress');
+  window.location.href = 'index.html';
+}
+
+// Add this event listener to your logout button
+const logoutBtn = document.getElementById('logoutBtn');
+logoutBtn.addEventListener('click', logoutFromMetaMask);
