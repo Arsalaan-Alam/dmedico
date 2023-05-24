@@ -16,6 +16,33 @@ window.addEventListener('DOMContentLoaded', () => {
   const submitButton = document.getElementById('submitButton');
   const dataTable = document.getElementById('dataTable');
 
+  const signInAddr = localStorage.getItem('walletAddress')
+  console.log(signInAddr)
+  
+  let dashboardArray = []
+  const data1 = [ {"function" : "getFilesByOwner"}, {
+    "owner": signInAddr
+  }]
+  
+  fetch('https://dmedico-6k6gsdlfoa-em.a.run.app/update', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data1)
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      // Process the fetched data
+      console.log(data);
+      dashboardArray = data.records
+      console.log(dashboardArray)
+    })
+    .catch((error) => {
+      console.error('Error fetching records:', error);
+    });
+
   addFileBtn.addEventListener('click', () => {
     fileInput.click();
   });
@@ -216,6 +243,133 @@ window.addEventListener('DOMContentLoaded', () => {
     // Add the file to the table
     addFileToTable(fileData);
   }
+  
+  const table = document.getElementById('dataTable');
+  const tableBody = table.querySelector('tbody');
+
+  const dashboardData = [ {"function" : "getFilesByOwner"}, {
+    "owner": signInAddr
+  }]
+  
+
+fetch('https://dmedico-6k6gsdlfoa-em.a.run.app/update', {
+  method: 'POST',
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(dashboardData)
+})
+  .then((response) => response.json())
+  .then((data) => {
+    // Process the fetched data
+    console.log(data);
+    const dashboardArray = data.records;
+
+    dashboardArray.forEach((record) => {
+      const newRow = tableBody.insertRow();
+
+      const fileIdCell = newRow.insertCell();
+      fileIdCell.textContent = record.id;
+
+      const fileNameCell = newRow.insertCell();
+      fileNameCell.textContent = record.filename;
+
+      const dateTimeCell = newRow.insertCell();
+      dateTimeCell.textContent = record.dateTime;
+
+      const permissionsCell = newRow.insertCell();
+      const manageAccessBtn = document.createElement('button');
+      manageAccessBtn.className = 'manageAccessBtn';
+      manageAccessBtn.textContent = 'Manage Access';
+      permissionsCell.appendChild(manageAccessBtn);
+      manageAccessBtn.addEventListener('click', () => {
+        openPopupBox(record.fileName);
+      });
+
+      const removeBtn = document.createElement('button');
+      removeBtn.className = 'removeBtn';
+      removeBtn.textContent = 'Remove File';
+      permissionsCell.appendChild(removeBtn);
+      removeBtn.addEventListener('click', function() {
+        // Get the row element that contains the remove button
+        const row = this.closest('tr');
+
+        // Remove the row from the table
+        if (row) {
+          row.remove();
+        }
+      });
+    });
+  })
+  .catch((error) => {
+    console.error('Error fetching records:', error);
+  });
+  
+/*
+  function loadDashboard(fileData) {
+    const newRow = document.createElement('tr');
+
+    // Serial Number column
+    const assignedSerialNumbers = new Set();
+    function generateUniqueSerialNumber() {
+      const serialNumber = Math.floor(Math.random() * 900000) + 100000;
+      if (assignedSerialNumbers.has(serialNumber)) {
+        return generateUniqueSerialNumber();
+      }
+      assignedSerialNumbers.add(serialNumber);
+      return serialNumber;
+    }
+
+
+    const serialNumber = generateUniqueSerialNumber();
+
+    const serialNoCell = document.createElement('td');
+    serialNoCell.textContent = fileData.id
+    newRow.appendChild(serialNoCell);
+
+
+    // IPFS Link (File Name) column
+    const ipfsLinkCell = document.createElement('td');
+    ipfsLinkCell.textContent = fileData.ipfsurl
+    newRow.appendChild(ipfsLinkCell);
+
+    // Date & Time column
+    const dateTimeCell = document.createElement('td');
+    dateTimeCell.textContent = fileData.dateTime;
+    newRow.appendChild(dateTimeCell);
+
+    // Permissions column
+    const permissionsCell = document.createElement('td');
+    const manageAccessBtn = document.createElement('button');
+    manageAccessBtn.className = 'manageAccessBtn';
+    manageAccessBtn.textContent = 'Manage Access';
+    permissionsCell.appendChild(manageAccessBtn);
+
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'removeBtn';
+    removeBtn.textContent = 'Remove File';
+    permissionsCell.appendChild(removeBtn);
+    removeBtn.addEventListener('click', function() {
+      // Get the row element that contains the remove button
+      const row = this.closest('tr');
+      
+      // Remove the row from the table
+      if (row) {
+        row.remove();
+      }
+    });
+
+
+    manageAccessBtn.addEventListener('click', () => {
+      openPopupBox(fileData.fileName);
+    });
+
+  
+    newRow.appendChild(permissionsCell);
+
+    dataTable.querySelector('tbody').appendChild(newRow);
+  }*/
 
   function addFileToTable(fileData) {
     const newRow = document.createElement('tr');
@@ -229,14 +383,14 @@ window.addEventListener('DOMContentLoaded', () => {
       }
       assignedSerialNumbers.add(serialNumber);
       return serialNumber;
-}
+    }
 
 
-const serialNumber = generateUniqueSerialNumber();
+    const serialNumber = generateUniqueSerialNumber();
 
-const serialNoCell = document.createElement('td');
-serialNoCell.textContent = serialNumber;
-newRow.appendChild(serialNoCell);
+    const serialNoCell = document.createElement('td');
+    serialNoCell.textContent = serialNumber;
+    newRow.appendChild(serialNoCell);
 
 
     // IPFS Link (File Name) column
@@ -327,26 +481,7 @@ while (accessTable.rows.length > 1) {
 
 // Example usage: Display sample access data
 
-const data1 = [ {"function" : "getFilesByOwner"}, {
-  "owner": localStorage.getItem('walletAddress')
-}]
 
-fetch('https://dmedico-6k6gsdlfoa-em.a.run.app/update', {
-  method: 'POST',
-  headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify(data1)
-  })
-  .then((res) => res.json())
-  .then((data) => {
-    // Process the fetched data
-    console.log(data);
-  })
-  .catch((error) => {
-    console.error('Error fetching records:', error);
-  });
 const sampleAccessData = [
   { userName: 'John Doe', walletAddress: '0x123abc' },
   { userName: 'Jane Smith', walletAddress: '0x456def' },
@@ -390,10 +525,50 @@ addAccessBtn.addEventListener('click', () => {
 });
 
 submitAccessBtn.addEventListener('click', () => {
+
+  function generateUniqueSerialNumber() {
+    return Math.floor(Math.random() * 900000) + 100000;
+  }
+
   // Handle the form submission, e.g., retrieve input values and perform actions
   const userName = document.getElementById('userNameInput').value;
   const walletAddress = document.getElementById('walletAddressInput').value;
   const remarks = document.getElementById('remarksInput').value;
+
+  const slNo = generateUniqueSerialNumber()
+  const ownerAddress = localStorage.getItem('walletAddress');
+  console.log(ownerAddress)
+  const lna = localStorage.getItem("fileData");
+  const parsedData = JSON.parse(lna);
+  const fname = parsedData.fileName;
+
+  console.log(fname);
+
+
+  const data3 = [ {"function" : "giveAccess"}, {
+    "id": slNo.toString(),
+    "owner": ownerAddress,
+    "filename": fname,    
+    "ipfsurl": "https://bafybeihiv7djpfbb6ypufrt32f6xg6eqi7ekya7l5gcykpoh2ge6dfywi4.ipfs.sphn.link",
+    "username": userName,
+    "userwallet": walletAddress
+  }
+
+]
+fetch ("https://dmedico-6k6gsdlfoa-em.a.run.app/update", {
+    method: 'POST',
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    body: JSON.stringify(data3),
+})
+ .then((res) => res.json())
+ .then((data) => console.log(data))
+ .catch((e) => {console.error(e)})
+
+ 
+  
 
   // Perform actions with the input values (e.g., store data, update table, etc.)
 
@@ -420,6 +595,7 @@ const viewFilesBtn = document.getElementById('viewFilesBtn');
 const dataTable = document.getElementById('dataTable');
 const sharedFilesTable = document.getElementById('sharedFilesTable');
 const addFileBtn = document.getElementById('addFileBtn');
+const tableBody = sharedFilesTable.querySelector('tbody'); // Get the table body element
 
 
 let isViewingSharedFiles = false;
@@ -429,10 +605,12 @@ if (isViewingSharedFiles) {
   viewFilesBtn.textContent = 'View Shared Files';
   dataTable.style.display = 'table';
   sharedFilesTable.style.display = 'none';
+  
 } else {
   viewFilesBtn.textContent = 'View Your Files';
   dataTable.style.display = 'none';
   sharedFilesTable.style.display = 'table';
+  updateSharedFilesTable()
 }
 
 isViewingSharedFiles = !isViewingSharedFiles;
@@ -444,6 +622,7 @@ if (dataTable.style.display === 'none') {
   sharedFilesTable.style.display = 'none';
 }
 });
+/*
 // Add this function in your db.js code
 function logoutFromMetaMask() {
   localStorage.removeItem('walletAddress');
@@ -452,31 +631,12 @@ function logoutFromMetaMask() {
 
 // Add this event listener to your logout button
 const logoutBtn = document.getElementById('logoutBtn');
-logoutBtn.addEventListener('click', logoutFromMetaMask);
+logoutBtn.addEventListener('click', logoutFromMetaMask);*/
 
 //const sharedFilesTable = document.getElementById('sharedFilesTable');
-const tableBody = sharedFilesTable.querySelector('tbody'); // Get the table body element
+//const tableBody = sharedFilesTable.querySelector('tbody'); // Get the table body element
 
-const walletAddress = localStorage.getItem('walletAddress');
 
-const data4 = [ {"function" : "getSharedFiles"}, {
-  "userwallet": walletAddress
-}]
-const sharedFilesData = []
-fetch ("https://dmedico-6k6gsdlfoa-em.a.run.app/update", {
-    method: 'POST',
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-    body: JSON.stringify(data4),
-})
- .then((res) => res.json())
- .then((data) => {
-   console.log(data)
-   sharedFilesData = data
-  })
- .catch((e) => {console.error(e)})
 // Sample data for shared files
 
 /*
@@ -497,41 +657,70 @@ const sharedFilesData = [
   },
   // Add more shared files data as needed
 ];*/
-
-// Function to dynamically update the shared files table
 function updateSharedFilesTable() {
-  // Clear existing table body content
-  tableBody.innerHTML = '';
+  const tableForSharedFiles = document.getElementById('sharedFilesTable');
+const tableBodyForSharedFiles = tableForSharedFiles.querySelector('tbody');
 
-  // Generate new table rows based on the shared files data
-  sharedFilesData.forEach((file) => {
-    const newRow = tableBody.insertRow();
+const requestDataForFiles = [
+  { "function": "getSharedFiles" },
+  { "userwallet": "0x0ed18cFf1e16Db3f8b76D05c84182E4849ab03D4" }
+];
 
-    // File From
-    const fileFromCell = newRow.insertCell();
-    fileFromCell.textContent = file.fileFrom;
+fetch("https://dmedico-6k6gsdlfoa-em.a.run.app/update", {
+  method: 'POST',
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(requestDataForFiles),
+})
+  .then((responseForFiles) => responseForFiles.json())
+  .then((responseDataForFiles) => {
+    console.log(responseDataForFiles);
 
-    // File Name
-    const fileNameCell = newRow.insertCell();
-    fileNameCell.textContent = file.fileName;
+    tableBodyForSharedFiles.innerHTML = '';
 
-    // Remarks
-    const remarksCell = newRow.insertCell();
-    remarksCell.textContent = file.remarks;
+    function formatDateAndTime(dateTimeValue) {
+      const dateValue = new Date(dateTimeValue);
+      const formattedDateValue = dateValue.toLocaleDateString();
+      const formattedTimeValue = dateValue.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      return formattedDateValue + ' ' + formattedTimeValue;
+    }
+    const prt = Object.values(responseDataForFiles)
+    console.log("PRT : ",prt)
+    const ele = prt[1]
+    for ( let i=0; i<=prt.length; i++){
+      //console.log(prt[i])
+      const newRowForFile = tableBodyForSharedFiles.insertRow();
+      const fileFromCell = newRowForFile.insertCell();  
+      fileFromCell.textContent = ele[i].username;    
 
-    // Time of Sharing
-    const timeOfSharingCell = newRow.insertCell();
-    timeOfSharingCell.textContent = file.timeOfSharing;
+      const fileNameCell = newRowForFile.insertCell();
+      fileNameCell.textContent = ele[i].filename;
 
-    // View
-    const viewCell = newRow.insertCell();
-    const viewLink = document.createElement('a');
-    viewLink.textContent = 'View';
-    viewLink.href = file.viewLink;
-    viewLink.target = '_blank';
-    viewCell.appendChild(viewLink);
+      const remarksCell = newRowForFile.insertCell();
+      remarksCell.textContent = 'Shared with ' + ele[i].owner;
+
+      const timeOfSharingCell = newRowForFile.insertCell();
+      timeOfSharingCell.textContent = ele[i].id
+
+      const viewCell = newRowForFile.insertCell();
+      const viewLink = document.createElement('a');
+      viewLink.textContent = 'View';
+      viewLink.href = ele[i].ipfsurl;
+      viewLink.target = '_blank';
+      viewCell.appendChild(viewLink);
+
+      
+    }
+    
+  })
+  .catch((errorForFiles) => {
+    console.error(errorForFiles);
   });
 }
+// Function to dynamically update the shared files table
+
 
 // Call the function to initially populate the table
-updateSharedFilesTable();
+//updateSharedFilesTable();
