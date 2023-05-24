@@ -285,9 +285,10 @@ fetch('https://dmedico-6k6gsdlfoa-em.a.run.app/update', {
       permissionsCell.appendChild(manageAccessBtn);
       
       const loggedinUser = localStorage.getItem('walletAddress');
-      let accessArray = []
+      
       manageAccessBtn.addEventListener('click', () => {
         console.log("In manage access")
+        let accessArray = []
         const popUpData = [ {"function" : "getAccessRecord"}, {
           "owner": loggedinUser,
           "ipfsurl": record.ipfsurl    
@@ -305,12 +306,13 @@ fetch('https://dmedico-6k6gsdlfoa-em.a.run.app/update', {
         .then((data) => {
           console.log(data)
           accessArray = data.records
+          openPopupBox(accessArray);
         })
         .catch((e) => {
           console.error(e)
         })
   
-        openPopupBox(accessArray);
+        //openPopupBox(accessArray);
         //console.log(iplink)
         
         });
@@ -531,9 +533,6 @@ closePopupBtnNew.addEventListener('click', () => {
 function showSubmitButton() {
   submitButton.style.display = 'block';
 }    
-
-
-  
 
 while (accessTable.rows.length > 1) {
   accessTable.deleteRow(1);
@@ -809,9 +808,11 @@ function updateSharedFilesTable() {
   const tableForSharedFiles = document.getElementById('sharedFilesTable');
 const tableBodyForSharedFiles = tableForSharedFiles.querySelector('tbody');
 
+const walletAddress = localStorage.getItem('walletAddress');
+
 const requestDataForFiles = [
   { "function": "getSharedFiles" },
-  { "userwallet": "0x0ed18cFf1e16Db3f8b76D05c84182E4849ab03D4" }
+  { "userwallet": walletAddress }
 ];
 let sharedData = []
 fetch("https://dmedico-6k6gsdlfoa-em.a.run.app/update", {
@@ -888,6 +889,24 @@ function accessRecords(accessData) {
     revokeBtn.textContent = 'Revoke';
     revokeBtn.className = 'revoke';
     revokeCell.appendChild(revokeBtn);
+    revokeBtn.addEventListener('click', () => {
+      const data5 = [ {"function" : "revokeAccess"}, {
+        "id": access.id    
+      }]
+      fetch ("https://dmedico-6k6gsdlfoa-em.a.run.app/update", {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+        body: JSON.stringify(data5),
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data))
+        .catch((e) => {console.error(e)})
+        
+        
+      })
   });
   
 }
