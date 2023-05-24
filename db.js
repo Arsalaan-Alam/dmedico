@@ -283,9 +283,37 @@ fetch('https://dmedico-6k6gsdlfoa-em.a.run.app/update', {
       manageAccessBtn.className = 'manageAccessBtn';
       manageAccessBtn.textContent = 'Manage Access';
       permissionsCell.appendChild(manageAccessBtn);
+      
+      const loggedinUser = localStorage.getItem('walletAddress');
+      let accessArray = []
       manageAccessBtn.addEventListener('click', () => {
-        openPopupBox(record.fileName);
-      });
+        console.log("In manage access")
+        const popUpData = [ {"function" : "getAccessRecord"}, {
+          "owner": loggedinUser,
+          "ipfsurl": record.ipfsurl    
+        }]
+        fetch ("https://dmedico-6k6gsdlfoa-em.a.run.app/update", {
+  
+          method: 'POST',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+          body: JSON.stringify(popUpData),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data)
+          accessArray = data.records
+        })
+        .catch((e) => {
+          console.error(e)
+        })
+  
+        openPopupBox(accessArray);
+        //console.log(iplink)
+        
+        });
 
       const removeBtn = document.createElement('button');
       removeBtn.className = 'removeBtn';
@@ -305,6 +333,7 @@ fetch('https://dmedico-6k6gsdlfoa-em.a.run.app/update', {
   .catch((error) => {
     console.error('Error fetching records:', error);
   });
+  
   
 /*
   function loadDashboard(fileData) {
@@ -424,10 +453,38 @@ fetch('https://dmedico-6k6gsdlfoa-em.a.run.app/update', {
       }
     });
 
-
+    const walletAddress = localStorage.getItem('walletAddress');
+    let sampleAccessData = []
     manageAccessBtn.addEventListener('click', () => {
-      openPopupBox(fileData.fileName);
-    });
+      console.log("In manage access")
+      const popUpData = [ {"function" : "getAccessRecord"}, {
+        "owner": walletAddress,
+        "ipfsurl": fileData.ipfsurl    
+      }]
+      fetch ("https://dmedico-6k6gsdlfoa-em.a.run.app/update", {
+
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+        body: JSON.stringify(popUpData),
+      })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data)
+        sampleAccessData = data.records
+
+        
+      })
+      .catch((e) => {
+        console.error(e)
+      })
+
+      openPopupBox(sampleAccessData);
+      //console.log(iplink)
+      
+      });
 
   
     newRow.appendChild(permissionsCell);
@@ -449,11 +506,16 @@ fetch('https://dmedico-6k6gsdlfoa-em.a.run.app/update', {
 
 });
 
-function openPopupBox(fileName) {
+function openPopupBox(recordArray) {
   const popupBox = document.getElementById('popupBox');
   const accessTable = document.getElementById('accessTable');
   const closePopupBtn = document.getElementById('closePopupBtn');
   const closePopupBtnNew = document.getElementById('closePopupBtnNew');
+
+  //const popupFileLink = document.getElementById('popupFileLink');
+  //popupFileLink.textContent = iplink;
+  const fileNameElement = document.getElementById('popupFileName');
+  //fileNameElement.textContent = fileName;
 
 closePopupBtnNew.addEventListener('click', () => {
   popupBox.style.display = 'none';
@@ -482,22 +544,12 @@ while (accessTable.rows.length > 1) {
 // Example usage: Display sample access data
 
 
-const sampleAccessData = [
+/*const sampleAccessData = [
   { userName: 'John Doe', walletAddress: '0x123abc' },
   { userName: 'Jane Smith', walletAddress: '0x456def' },
   { userName: 'Alice Johnson', walletAddress: '0x789ghi' }
-];
-
-sampleAccessData.forEach(access => {
-  const newRow = accessTable.insertRow();
-  newRow.insertCell().textContent = access.userName;
-  newRow.insertCell().textContent = access.walletAddress;
-  const revokeCell = newRow.insertCell();
-  const revokeBtn = document.createElement('button');
-  revokeBtn.textContent = 'Revoke';
-  revokeBtn.className = 'revoke';
-  revokeCell.appendChild(revokeBtn);
-});
+];*/
+accessRecords(recordArray)
 
 // Show the popup box
 popupBox.style.display = 'block';
@@ -600,11 +652,107 @@ const tableBody = sharedFilesTable.querySelector('tbody'); // Get the table body
 
 let isViewingSharedFiles = false;
 
+function updateDashboard() {
+  const table = document.getElementById('dataTable');
+const tableBody = table.querySelector('tbody');
+
+const dashboardData = [ {"function" : "getFilesByOwner"}, {
+  "owner": signInAddr
+}]
+
+
+fetch('https://dmedico-6k6gsdlfoa-em.a.run.app/update', {
+method: 'POST',
+headers: {
+  'Accept': 'application/json',
+  'Content-Type': 'application/json'
+},
+body: JSON.stringify(dashboardData)
+})
+.then((response) => response.json())
+.then((data) => {
+  // Process the fetched data
+  console.log(data);
+  const dashboardArray = data.records;
+  let owner = localStorage.getItem('walletAddress');
+  console.log(owner)
+  
+
+  dashboardArray.forEach((record) => {
+    const newRow = tableBody.insertRow();
+    const iplink = record.ipfsurl
+    const fileIdCell = newRow.insertCell();
+    fileIdCell.textContent = record.id;
+
+    const fileNameCell = newRow.insertCell();
+    fileNameCell.textContent = record.filename;
+
+    const dateTimeCell = newRow.insertCell();
+    dateTimeCell.textContent = record.dateTime;
+
+    const permissionsCell = newRow.insertCell();
+    const manageAccessBtn = document.createElement('button');
+    manageAccessBtn.className = 'manageAccessBtn';
+    manageAccessBtn.textContent = 'Manage Access';
+    permissionsCell.appendChild(manageAccessBtn);
+    let submitBtnData = []
+    manageAccessBtn.addEventListener('click', () => {
+      console.log("In manage access")
+      const popUpData = [ {"function" : "getAccessRecord"}, {
+        "owner": owner,
+        "ipfsurl": record.ipfsurl    
+      }]
+      fetch ("https://dmedico-6k6gsdlfoa-em.a.run.app/update", {
+
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+        body: JSON.stringify(popUpData),
+      })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data)
+        submitBtnData = data.records
+      })
+      .catch((e) => {
+        console.error(e)
+      })
+
+      openPopupBox(submitBtnData);
+      //console.log(iplink)
+      
+      });
+
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'removeBtn';
+    removeBtn.textContent = 'Remove File';
+    permissionsCell.appendChild(removeBtn);
+    removeBtn.addEventListener('click', function() {
+      // Get the row element that contains the remove button
+      const row = this.closest('tr');
+
+      // Remove the row from the table
+      if (row) {
+        row.remove();
+      }
+    });
+  });
+})
+.catch((error) => {
+  console.error('Error fetching records:', error);
+});
+
+}
+
+
 viewFilesBtn.addEventListener('click', () => {
 if (isViewingSharedFiles) {
   viewFilesBtn.textContent = 'View Shared Files';
   dataTable.style.display = 'table';
   sharedFilesTable.style.display = 'none';
+  updateDashboard()
   
 } else {
   viewFilesBtn.textContent = 'View Your Files';
@@ -665,7 +813,7 @@ const requestDataForFiles = [
   { "function": "getSharedFiles" },
   { "userwallet": "0x0ed18cFf1e16Db3f8b76D05c84182E4849ab03D4" }
 ];
-
+let sharedData = []
 fetch("https://dmedico-6k6gsdlfoa-em.a.run.app/update", {
   method: 'POST',
   headers: {
@@ -676,7 +824,8 @@ fetch("https://dmedico-6k6gsdlfoa-em.a.run.app/update", {
 })
   .then((responseForFiles) => responseForFiles.json())
   .then((responseDataForFiles) => {
-    console.log(responseDataForFiles);
+    console.log(responseDataForFiles.records);
+    sharedData = responseDataForFiles.records
 
     tableBodyForSharedFiles.innerHTML = '';
 
@@ -686,28 +835,29 @@ fetch("https://dmedico-6k6gsdlfoa-em.a.run.app/update", {
       const formattedTimeValue = dateValue.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       return formattedDateValue + ' ' + formattedTimeValue;
     }
-    const prt = Object.values(responseDataForFiles)
-    console.log("PRT : ",prt)
-    const ele = prt[1]
-    for ( let i=0; i<=prt.length; i++){
+
+    const prt = Object.values(sharedData)
+    //console.log("PRT : ",prt)
+    //const ele = prt[1]
+    for ( let i=0; i<sharedData.length; i++){
       //console.log(prt[i])
       const newRowForFile = tableBodyForSharedFiles.insertRow();
       const fileFromCell = newRowForFile.insertCell();  
-      fileFromCell.textContent = ele[i].username;    
+      fileFromCell.textContent = sharedData[i].username;    
 
       const fileNameCell = newRowForFile.insertCell();
-      fileNameCell.textContent = ele[i].filename;
+      fileNameCell.textContent = sharedData[i].filename;
 
       const remarksCell = newRowForFile.insertCell();
-      remarksCell.textContent = 'Shared with ' + ele[i].owner;
+      remarksCell.textContent = 'Shared with ' + sharedData[i].owner;
 
       const timeOfSharingCell = newRowForFile.insertCell();
-      timeOfSharingCell.textContent = ele[i].id
+      timeOfSharingCell.textContent = sharedData[i].id
 
       const viewCell = newRowForFile.insertCell();
       const viewLink = document.createElement('a');
       viewLink.textContent = 'View';
-      viewLink.href = ele[i].ipfsurl;
+      viewLink.href = sharedData[i].ipfsurl;
       viewLink.target = '_blank';
       viewCell.appendChild(viewLink);
 
@@ -724,3 +874,20 @@ fetch("https://dmedico-6k6gsdlfoa-em.a.run.app/update", {
 
 // Call the function to initially populate the table
 //updateSharedFilesTable();
+
+function accessRecords(accessData) {
+  console.log("access records : ",accessData)
+  accessData.forEach(access => {
+    const newRow = accessTable.insertRow();
+    newRow.insertCell().textContent = access.username;
+    //newRow.insertCell().textContent = "Hardcoded"
+    newRow.insertCell().textContent = access.userwallet;
+    //newRow.insertCell().textContent = "hardcoded wallet"
+    const revokeCell = newRow.insertCell();
+    const revokeBtn = document.createElement('button');
+    revokeBtn.textContent = 'Revoke';
+    revokeBtn.className = 'revoke';
+    revokeCell.appendChild(revokeBtn);
+  });
+  
+}
