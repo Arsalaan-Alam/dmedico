@@ -641,70 +641,7 @@ addAccessBtn.addEventListener('click', () => {
 
 });
 
-submitAccessBtn.addEventListener('click', () => {
 
-  function generateUniqueSerialNumber() {
-    return Math.floor(Math.random() * 900000) + 100000;
-  }
-
-  // Handle the form submission, e.g., retrieve input values and perform actions
-  const userName = document.getElementById('userNameInput').value;
-  const walletAddress = document.getElementById('walletAddressInput').value;
-  const remarks = document.getElementById('remarksInput').value;
-
-  const slNo = generateUniqueSerialNumber()
-  const ownerAddress = localStorage.getItem('walletAddress');
-  console.log(ownerAddress)
-  const lna = localStorage.getItem("fileData");
-  const parsedData = JSON.parse(lna);
-  const fname = parsedData.fileName;
-
-  console.log(fname);
-
-
-  const data3 = [ {"function" : "giveAccess"}, {
-    "id": slNo.toString(),
-    "owner": ownerAddress,
-    "filename": fname,    
-    "ipfsurl": "https://record.ipfsurl",
-    "username": userName,
-    "userwallet": walletAddress
-  }
-
-]
-fetch ("https://dmedico-6k6gsdlfoa-em.a.run.app/update", {
-    method: 'POST',
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-    body: JSON.stringify(data3),
-})
- .then((res) => res.json())
- .then((data) => console.log(data))
- .catch((e) => {console.error(e)})
-
- 
-  
-
-  // Perform actions with the input values (e.g., store data, update table, etc.)
-
-  // Reset the form
-  document.getElementById('userNameInput').value = '';
-  document.getElementById('walletAddressInput').value = '';
-  document.getElementById('remarksInput').value = '';
-
-  // Hide the form and show the "Add Access" button again
-  addAccessForm.style.display = 'none';
-  addAccessBtn.style.display = 'block';
-  accessTable.style.display = 'table';
-  accessTable.style.width = '100%';
-
-  closePopupBtn.style.display = 'block';
-  const poi = document.getElementById('poi')
-  poi.textContent = 'People Who Have Access';
-
-});
 
 // Rest of your code...
 });
@@ -725,7 +662,7 @@ const dashboardData = [ {"function" : "getFilesByOwner"}, {
   "owner": signInAddr
 }]
 
-
+let selectedIpfsUrl;
 fetch('https://dmedico-6k6gsdlfoa-em.a.run.app/update', {
 method: 'POST',
 headers: {
@@ -747,7 +684,7 @@ body: JSON.stringify(dashboardData)
     const newRow = tableBody.insertRow();
     const iplink = record.ipfsurl
     const fileIdCell = newRow.insertCell();
-    fileIdCell.textContent = record.ipfsurl;
+    fileIdCell.textContent = record.id;
 
     const fileNameCell = newRow.insertCell();
     fileNameCell.textContent = record.filename;
@@ -764,9 +701,10 @@ body: JSON.stringify(dashboardData)
     manageAccessBtn.addEventListener('click', () => {
       console.log("In manage access")
       console.log('Submit Access Btn : ', record.ipfsurl  )
+      selectedIpfsUrl = record.ipfsurl
       const popUpData = [ {"function" : "getAccessRecord"}, {
         "owner": owner,
-        "ipfsurl": record.ipfsurl    
+        "ipfsurl": selectedIpfsUrl    
       }]
       fetch ("https://dmedico-6k6gsdlfoa-em.a.run.app/update", {
 
