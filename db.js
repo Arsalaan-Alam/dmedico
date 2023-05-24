@@ -241,7 +241,7 @@ window.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('fileData', JSON.stringify(fileData));
 
     // Add the file to the table
-    addFileToTable(fileData);
+    //addFileToTable(fileData);
   }
   
   const table = document.getElementById('dataTable');
@@ -285,9 +285,10 @@ fetch('https://dmedico-6k6gsdlfoa-em.a.run.app/update', {
       permissionsCell.appendChild(manageAccessBtn);
       
       const loggedinUser = localStorage.getItem('walletAddress');
-      
+      const submitAccessBtn = document.getElementById('submitAccessBtn');
       manageAccessBtn.addEventListener('click', () => {
         console.log("In manage access")
+        console.log(loggedinUser + " " + record.ipfsurl)
         let accessArray = []
         const popUpData = [ {"function" : "getAccessRecord"}, {
           "owner": loggedinUser,
@@ -311,7 +312,71 @@ fetch('https://dmedico-6k6gsdlfoa-em.a.run.app/update', {
         .catch((e) => {
           console.error(e)
         })
-  
+        
+        submitAccessBtn.addEventListener('click', () => {
+
+          function generateUniqueSerialNumber() {
+            return Math.floor(Math.random() * 900000) + 100000;
+          }
+        
+          // Handle the form submission, e.g., retrieve input values and perform actions
+          const userName = document.getElementById('userNameInput').value;
+          const walletAddress = document.getElementById('walletAddressInput').value;
+          const remarks = document.getElementById('remarksInput').value;
+        
+          const slNo = generateUniqueSerialNumber()
+          const ownerAddress = localStorage.getItem('walletAddress');
+          console.log(ownerAddress)
+          const lna = localStorage.getItem("fileData");
+          const parsedData = JSON.parse(lna);
+          const fname = parsedData.fileName;
+        
+          console.log(fname);
+        
+        
+          const data3 = [ {"function" : "giveAccess"}, {
+            "id": slNo.toString(),
+            "owner": ownerAddress,
+            "filename": fname,    
+            "ipfsurl": record.ipfsurl,
+            "username": userName,
+            "userwallet": walletAddress
+          }
+        
+        ]
+        fetch ("https://dmedico-6k6gsdlfoa-em.a.run.app/update", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+            body: JSON.stringify(data3),
+        })
+         .then((res) => res.json())
+         .then((data) => console.log(data))
+         .catch((e) => {console.error(e)})
+        
+         
+          
+        
+          // Perform actions with the input values (e.g., store data, update table, etc.)
+        
+          // Reset the form
+          document.getElementById('userNameInput').value = '';
+          document.getElementById('walletAddressInput').value = '';
+          document.getElementById('remarksInput').value = '';
+        
+          // Hide the form and show the "Add Access" button again
+          addAccessForm.style.display = 'none';
+          addAccessBtn.style.display = 'block';
+          accessTable.style.display = 'table';
+          accessTable.style.width = '100%';
+        
+          closePopupBtn.style.display = 'block';
+          const poi = document.getElementById('poi')
+          poi.textContent = 'People Who Have Access';
+        
+        });
         //openPopupBox(accessArray);
         //console.log(iplink)
         
@@ -459,6 +524,7 @@ fetch('https://dmedico-6k6gsdlfoa-em.a.run.app/update', {
     let sampleAccessData = []
     manageAccessBtn.addEventListener('click', () => {
       console.log("In manage access")
+      console.log("add files to table : ", fileData.ipfsurl)
       const popUpData = [ {"function" : "getAccessRecord"}, {
         "owner": walletAddress,
         "ipfsurl": fileData.ipfsurl    
@@ -600,7 +666,7 @@ submitAccessBtn.addEventListener('click', () => {
     "id": slNo.toString(),
     "owner": ownerAddress,
     "filename": fname,    
-    "ipfsurl": "https://bafybeihiv7djpfbb6ypufrt32f6xg6eqi7ekya7l5gcykpoh2ge6dfywi4.ipfs.sphn.link",
+    "ipfsurl": "https://record.ipfsurl",
     "username": userName,
     "userwallet": walletAddress
   }
@@ -651,10 +717,10 @@ const tableBody = sharedFilesTable.querySelector('tbody'); // Get the table body
 
 let isViewingSharedFiles = false;
 
-function updateDashboard() {
+function updateDashboard() {  
   const table = document.getElementById('dataTable');
 const tableBody = table.querySelector('tbody');
-
+const signInAddr = localStorage.getItem('walletAddress')
 const dashboardData = [ {"function" : "getFilesByOwner"}, {
   "owner": signInAddr
 }]
@@ -681,7 +747,7 @@ body: JSON.stringify(dashboardData)
     const newRow = tableBody.insertRow();
     const iplink = record.ipfsurl
     const fileIdCell = newRow.insertCell();
-    fileIdCell.textContent = record.id;
+    fileIdCell.textContent = record.ipfsurl;
 
     const fileNameCell = newRow.insertCell();
     fileNameCell.textContent = record.filename;
@@ -697,6 +763,7 @@ body: JSON.stringify(dashboardData)
     let submitBtnData = []
     manageAccessBtn.addEventListener('click', () => {
       console.log("In manage access")
+      console.log('Submit Access Btn : ', record.ipfsurl  )
       const popUpData = [ {"function" : "getAccessRecord"}, {
         "owner": owner,
         "ipfsurl": record.ipfsurl    
@@ -745,12 +812,19 @@ body: JSON.stringify(dashboardData)
 
 }
 
+function deleteAllRowsFromDataTable() {
+  const tableBody = dataTable.querySelector('tbody');
+  while (tableBody.firstChild) {
+    tableBody.firstChild.remove();
+  }
+}
 
 viewFilesBtn.addEventListener('click', () => {
 if (isViewingSharedFiles) {
   viewFilesBtn.textContent = 'View Shared Files';
   dataTable.style.display = 'table';
-  sharedFilesTable.style.display = 'none';
+  sharedFilesTable.style.display = 'none';  
+  deleteAllRowsFromDataTable()
   updateDashboard()
   
 } else {
@@ -760,6 +834,8 @@ if (isViewingSharedFiles) {
   updateSharedFilesTable()
 }
 
+
+
 isViewingSharedFiles = !isViewingSharedFiles;
 });
 addFileBtn.addEventListener('click', () => {
@@ -767,6 +843,7 @@ if (dataTable.style.display === 'none') {
   // If the shared files table is currently visible, show the data table
   dataTable.style.display = 'table';
   sharedFilesTable.style.display = 'none';
+  viewFilesBtn.textContent = 'View Shared Files';
 }
 });
 /*
